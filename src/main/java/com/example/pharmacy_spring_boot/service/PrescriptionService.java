@@ -1,6 +1,10 @@
 package com.example.pharmacy_spring_boot.service;
 
+import com.example.pharmacy_spring_boot.exception.DuplicateDataException;
+import com.example.pharmacy_spring_boot.model.Patient;
+import com.example.pharmacy_spring_boot.model.Prescription;
 import com.example.pharmacy_spring_boot.repository.PrescriptionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,4 +12,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PrescriptionService {
     private final PrescriptionRepository prescriptionRepository;
+
+    @Transactional
+    public Prescription saveOrUpdate(Prescription prescription){
+        if (prescriptionRepository.existsById(prescription.getId()))
+            throw new DuplicateDataException(String.format("Prescription with %s id exists.", prescription.getId()));
+        else
+            return prescriptionRepository.save(prescription);
+    }
 }

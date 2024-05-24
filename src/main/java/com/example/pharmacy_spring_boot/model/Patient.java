@@ -22,11 +22,12 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(unique = true)
     String username;
 
     String password;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    List<Prescription> prescription;
+//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    List<Prescription> prescription;
 
 }

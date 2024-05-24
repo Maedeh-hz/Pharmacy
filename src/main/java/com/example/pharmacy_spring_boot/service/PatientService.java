@@ -1,6 +1,7 @@
 package com.example.pharmacy_spring_boot.service;
 
 import com.example.pharmacy_spring_boot.exception.DuplicateDataException;
+import com.example.pharmacy_spring_boot.exception.NotFoundException;
 import com.example.pharmacy_spring_boot.model.Patient;
 import com.example.pharmacy_spring_boot.repository.PatientRepository;
 import jakarta.transaction.Transactional;
@@ -18,5 +19,11 @@ public class PatientService {
             throw new DuplicateDataException(String.format("User with %s username exists.", patient.getUsername()));
         else
             return patientRepository.save(patient);
+    }
+
+    public Patient findById(Long id){
+            return patientRepository
+                    .findById(id)
+                    .orElseThrow(() -> new NotFoundException(String.format("Patient with %s id exists.", id)));
     }
 }
