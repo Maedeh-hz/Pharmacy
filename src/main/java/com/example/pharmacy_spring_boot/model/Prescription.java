@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SoftDelete;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -13,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-@ToString
+@ToString(exclude = "items")
 @Entity
 @SoftDelete
 public class Prescription {
@@ -22,11 +24,14 @@ public class Prescription {
     Long id;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "patient_id")
     Patient patient;
 
-    @OneToMany(mappedBy = "prescription")
-    List<Item> items;
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "prescription_item",
+            joinColumns = @JoinColumn(name = "prescription_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id"))
+    List<Item> items = new ArrayList<>();
 
     Boolean confirmed = false;
 }

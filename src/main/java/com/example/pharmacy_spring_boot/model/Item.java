@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SoftDelete;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,9 +25,6 @@ public class Item {
 
     Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "prescription_id")
-    Prescription prescription;
-
     Boolean doesExist = true;
+
 }

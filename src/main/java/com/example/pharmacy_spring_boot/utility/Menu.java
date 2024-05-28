@@ -33,7 +33,8 @@ public class Menu {
     @PostConstruct
     public void test(){
 //        registerPatient();
-        registerPrescription();
+//        registerPrescription();
+        loadAllConfirmedPrescriptions();
     }
 
 
@@ -73,5 +74,29 @@ public class Menu {
         } catch (Exception e){
             log.error("ERROR KHORDIM!!!!");
         }
+    }
+
+    public void loadAllConfirmedPrescriptions(){
+        List<Prescription> confirmed = prescriptionService.findAllByConfirmed();
+        System.out.println(confirmed);
+//        confirmed.forEach(prescription -> {
+//            System.out.println("id: " + prescription.getId());
+//            System.out.println("Items with their prices: ");
+//            prescription.getItems().forEach(item -> {
+//                System.out.println("name: " + item.getName() +
+//                        "   | price: " + item.getPrice());
+//            });
+//            System.out.println("Cost at all: " + calculateCost(prescription));
+//        });
+
+    }
+
+    public Double calculateCost(Prescription prescription){
+        List<Item> items = prescription.getItems();
+        Double cost = 0D;
+        for (Item item : items) {
+            cost += item.getPrice();
+        }
+        return cost;
     }
 }
